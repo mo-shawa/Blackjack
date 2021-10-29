@@ -42,6 +42,22 @@ function makeDeck(deck) {
 			deck.push(card);
 		});
 	});
+	return deck;
 }
+
+// Shuffle deck
+
+function shuffle(deck) {
+	for (let i = 0; i < deck.length; i++) {
+		let random = Math.floor(Math.random() * 52);
+		let temp = deck[i];
+		deck[i] = deck[random];
+		deck[random] = temp;
+	}
+}
+
 makeDeck(deck);
+// console.log(deck);
+shuffle(deck);
 console.log(deck);
+// console.log(deck);
