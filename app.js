@@ -56,8 +56,31 @@ function shuffle(deck) {
 	}
 }
 
+// Deal cards
+function deal(deck) {
+	pHand.push(deck.pop(), deck.pop());
+	dHand.push(deck.pop(), deck.pop());
+}
+
+//Calculate hand values
+function calcHandVal(hand) {
+	let sum = 0;
+	hand.forEach(function (card) {
+		if (card.value == "j" || card.value == "q" || card.value == "k") {
+			sum += 10;
+		} else if (card.value == "a") {
+			sum + 11 < 21 ? (sum += 11) : (sum += 1);
+		} else {
+			sum += card.value;
+		}
+	});
+}
+
 makeDeck(deck);
 // console.log(deck);
 shuffle(deck);
-console.log(deck);
 // console.log(deck);
+deal(deck);
+// console.log(deck);
+console.log(pHand);
+console.log(dHand);
