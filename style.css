@@ -1,0 +1,12 @@
+.board {
+	display: flex;
+	justify-content: space-evenly;
+	flex-direction: row;
+	height: 90vh;
+}
+
+.board > div {
+	min-height: 200px;
+	min-width: 200px;
+	border: 1px solid red;
+}
