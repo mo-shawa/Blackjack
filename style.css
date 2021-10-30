@@ -1,12 +1,27 @@
-.board {
+.container {
 	display: flex;
 	justify-content: space-evenly;
 	flex-direction: row;
 	height: 90vh;
+
+}
+
+.board {
+	display: flex;
+	justify-content: space-evenly;
+	flex-direction: row;
+	align-items: center;
+	text-align: center;
+	
 }
 
 .board > div {
 	min-height: 200px;
 	min-width: 200px;
 	border: 1px solid red;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
+
+
