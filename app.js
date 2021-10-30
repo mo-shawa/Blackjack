@@ -22,13 +22,25 @@ let won = false;
 
 //FUNCTIONS
 function init() {
-	makeDeck();
-	shuffle();
 	pHand = [];
 	pHandVal = 0;
 	dHand = [];
 	dHandVal = 0;
 	won = false;
+	deck = [];
+	makeDeck(deck);
+	shuffle(deck);
+	deal(deck);
+	render();
+}
+
+//Render
+function render() {
+	pHandVal = calcHandVal(pHand);
+	dHandVal = calcHandVal(dHand);
+	console.log(pHandVal);
+	calcHandVal(dHand);
+	console.log(dHandVal);
 }
 
 //Create a deck
@@ -47,13 +59,24 @@ function makeDeck(deck) {
 
 // Shuffle deck
 
-function shuffle(deck) {
-	for (let i = 0; i < deck.length; i++) {
-		let random = Math.floor(Math.random() * 52);
-		let temp = deck[i];
-		deck[i] = deck[random];
-		deck[random] = temp;
+function shuffle() {
+	// return hands before shuffling?
+	// pHand.forEach(function(){
+	//     deck.push(pHand.pop())
+	// })
+	// dHand.forEach(function(){
+	//     deck.push(dHand.pop())
+	// })
+
+	for (let j = 0; j < 1000; j++) {
+		for (let i = 0; i < deck.length; i++) {
+			let random = Math.floor(Math.random() * deck.length);
+			let temp = deck[i];
+			deck[i] = deck[random];
+			deck[random] = temp;
+		}
 	}
+	// console.log(deck);
 }
 
 // Deal cards
@@ -65,15 +88,20 @@ function deal(deck) {
 //Calculate hand values
 function calcHandVal(hand) {
 	let sum = 0;
-	hand.forEach(function (card) {
+	hand.forEach(function (card, i) {
 		if (card.value == "j" || card.value == "q" || card.value == "k") {
 			sum += 10;
 		} else if (card.value == "a") {
-			sum + 11 < 21 ? (sum += 11) : (sum += 1);
+			sum + 11 <= 21 ? (sum += 11) : (sum += 1);
 		} else {
 			sum += card.value;
 		}
+		// console.log("hand:" + hand);
+		// console.log(`argument: ${arguments}`);
 	});
+	return sum;
+	console.log(`phand: ${pHandVal}`);
+	console.log(`dhand: ${dHandVal}`);
 }
 
 makeDeck(deck);
@@ -82,5 +110,12 @@ shuffle(deck);
 // console.log(deck);
 deal(deck);
 // console.log(deck);
-console.log(pHand);
-console.log(dHand);
+// console.log(pHand[1]);
+// console.log(dHand[1]);
+// console.log(deck);
+
+shuffleBtn.addEventListener("click", function () {
+	shuffle();
+});
+
+dealBtn.addEventListener("click", init);
