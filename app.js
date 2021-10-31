@@ -19,7 +19,7 @@ let pHandVal = 0;
 let dHand = [];
 let dHandVal = 0;
 // maybe use -1 0 1 instead of true false
-let won = false;
+// let end = false;
 
 //FUNCTIONS
 function init() {
@@ -27,7 +27,7 @@ function init() {
   pHandVal = 0;
   dHand = [];
   dHandVal = 0;
-  won = false;
+  end = false;
   deck = [];
   makeDeck(deck);
   shuffle(deck);
@@ -38,28 +38,28 @@ function init() {
 //Render
 function render() {
   pHandVal = calcHandVal(pHand);
+  // if i disable either textContent, the whole thing breaks???
   pHandEl.textContent = pHandVal
 
   dHandVal = calcHandVal(dHand);
   dHandEl.textContent = dHandVal 
-  console.log(pHandVal);
   calcHandVal(dHand);
-  console.log(dHandVal);
+
+  checkBust()
+
   // render dealt cards
   
   // render player hand
   pHand.forEach(function (card) {
     let cd = document.createElement("div");
     cd.classList.add("card");
-    console.log(card.suit, card.value);
+    
     // Account for css class naming format
     let parseVal;
     typeof card.value == "number" && card.value < 10
       ? (parseVal = `0${card.value}`)
       : (parseVal = card.value);
     cd.classList.add(card.suit[0] + parseVal);
-
-    console.log(cd);
 	
     pHandEl.appendChild(cd);
   });
@@ -68,7 +68,7 @@ function render() {
   dHand.forEach(function (card) {
     let cd = document.createElement("div");
     cd.classList.add("card");
-    console.log(card.suit, card.value);
+    // console.log(card.suit, card.value);
     // Account for css class naming format
     let parseVal;
     typeof card.value == "number" && card.value < 10
@@ -76,9 +76,36 @@ function render() {
       : (parseVal = card.value);
     cd.classList.add(card.suit[0] + parseVal);
 
-    console.log(cd);
+    // console.log(cd);
     dHandEl.appendChild(cd);
   });
+}
+
+// hit function 
+function hit(){
+  if(checkBust()){
+    return
+  } else{
+  pHand.push(deck.pop())}  
+  render()
+}
+
+// stay function
+function stay(){
+  console.log('stey')
+}
+
+// check bust 
+
+function checkBust(){
+  if (pHandVal > 21){
+    pHandEl.style.color = 'red'
+    return true
+
+  }else {
+    return
+    false
+  }
 }
 
 //Create a deck
@@ -114,7 +141,7 @@ function shuffle() {
       deck[random] = temp;
     }
   }
-  console.log(deck);
+  // console.log(deck);
 }
 
 // Deal cards
@@ -134,20 +161,18 @@ function calcHandVal(hand) {
     } else {
       sum += card.value;
     }
-    // console.log("hand:" + hand);
-    // console.log(`argument: ${arguments}`);
   });
   return sum;
-  console.log(`phand: ${pHandVal}`);
-  console.log(`dhand: ${dHandVal}`);
-}
+  
 
-// makeDeck(deck);
-// shuffle(deck);
-// deal(deck);
+}
 
 shuffleBtn.addEventListener("click", function () {
   shuffle();
 });
 
 dealBtn.addEventListener("click", init);
+
+hitBtn.addEventListener('click', hit)
+stayBtn.addEventListener('click', stay)
+
