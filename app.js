@@ -20,7 +20,7 @@ let pHandVal = 0;
 let dHand = [];
 let dHandVal = 0;
 // maybe use -1 0 1 instead of true false
-// let end = false;
+let end = false;
 
 //FUNCTIONS
 function init() {
@@ -28,6 +28,7 @@ function init() {
 	pHandVal = 0;
 	dHand = [];
 	dHandVal = 0;
+  textEl.innerHTML = ''
 	end = false;
 	deck = [];
 	makeDeck(deck);
@@ -71,23 +72,26 @@ function render() {
 	dHand.forEach(function (card) {
 		let cd = document.createElement("div");
 		cd.classList.add("card");
-		// console.log(card.suit, card.value);
+
 		// Account for css class naming format
 		let parseVal;
 		typeof card.value == "number" && card.value < 10
 			? (parseVal = `0${card.value}`)
 			: (parseVal = card.value);
 		cd.classList.add(card.suit[0] + parseVal);
-
-		// console.log(cd);
+    
 		dHandEl.appendChild(cd);
 	});
+  dHandEl.firstChild.classList.add('back')
+  // $('dHandEl div:first').addClass('back')
 }
 
 // hit function
 function hit() {
 	if (checkBust()) {
-		console.log("House wins! Press Deal to play again");
+    dHandEl.firstChild.classList.toggle('back')
+
+		textEl.textContent = "House wins! Press Deal to play again";
 		return;
 	} else {
 		pHand.push(deck.pop());
@@ -99,13 +103,16 @@ function hit() {
 function stay() {
 	checkDealer();
 	console.log("stey");
+  render()
 }
 
 // check dealer
 function checkDealer() {
-	dHandVal < 17 ? dHand.push(deck.pop()) : undefined;
+  dHandEl.firstChild.classList.toggle('back')
+  if (dHandVal <17 && dHandVal <pHandVal){
+	dHand.push(deck.pop())
 }
-
+}
 // check bust
 function checkBust() {
 	return pHandVal > 21;
@@ -180,5 +187,7 @@ shuffleBtn.addEventListener("click", function () {
 
 dealBtn.addEventListener("click", init);
 
-hitBtn.addEventListener("click", hit);
+hitBtn.addEventListener("click", function(){
+  end = false ? hit() : undefined
+});
 stayBtn.addEventListener("click", stay);
