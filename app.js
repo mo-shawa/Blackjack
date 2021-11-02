@@ -88,6 +88,7 @@ function render() {
 
 // hit function
 function hit() {
+	debugger;
 	if (end == true) {
 		return;
 	} else if (checkBust()) {
@@ -111,7 +112,8 @@ function stay() {
 	render();
 }
 
-// check dealer
+// compare values
+
 function compareScore() {
 	dealer.handVal = calcHandVal(dealer.hand);
 	player.handVal = calcHandVal(player.hand);
@@ -155,9 +157,11 @@ function checkBust() {
 	dealer.handVal = calcHandVal(dealer.hand);
 	if (player.handVal > 21) {
 		textEl.textContent = "Player bust, House wins! Press Deal to play again.";
+		return true;
 	}
 	if (dealer.handVal > 21) {
 		textEl.textContent = "House bust, Player wins! Press Deal to play again.";
+		return true;
 	}
 
 	// {
