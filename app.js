@@ -28,13 +28,15 @@ function init() {
 	pHandVal = 0;
 	dHand = [];
 	dHandVal = 0;
-  textEl.innerHTML = ''
+	textEl.innerHTML = "";
 	end = false;
 	deck = [];
 	makeDeck(deck);
 	shuffle(deck);
 	deal(deck);
 	render();
+	dHandEl.firstChild.id = "flipped";
+	dHandEl.firstChild.classList.add("back");
 }
 
 //Render
@@ -79,18 +81,17 @@ function render() {
 			? (parseVal = `0${card.value}`)
 			: (parseVal = card.value);
 		cd.classList.add(card.suit[0] + parseVal);
-    
+
 		dHandEl.appendChild(cd);
 	});
-  dHandEl.firstChild.classList.add('back')
-  // $('dHandEl div:first').addClass('back')
+
+	// $('dHandEl div:first').addClass('back')
 }
 
 // hit function
 function hit() {
 	if (checkBust()) {
-    dHandEl.firstChild.classList.toggle('back')
-
+		end = true;
 		textEl.textContent = "House wins! Press Deal to play again";
 		return;
 	} else {
@@ -101,17 +102,21 @@ function hit() {
 
 // stay function
 function stay() {
+	document.getElementById("flipped").classList.toggle("back");
 	checkDealer();
 	console.log("stey");
-  render()
+	render();
 }
 
 // check dealer
 function checkDealer() {
-  dHandEl.firstChild.classList.toggle('back')
-  if (dHandVal <17 && dHandVal <pHandVal){
-	dHand.push(deck.pop())
-}
+	// console.log(flip.classList);
+	// if (end) {
+	// 	return;
+	// }
+	if (dHandVal < 17 && dHandVal < pHandVal) {
+		dHand.unshift(deck.pop());
+	}
 }
 // check bust
 function checkBust() {
@@ -187,7 +192,7 @@ shuffleBtn.addEventListener("click", function () {
 
 dealBtn.addEventListener("click", init);
 
-hitBtn.addEventListener("click", function(){
-  end == false ? hit() : undefined
+hitBtn.addEventListener("click", function () {
+	end == false ? hit() : undefined;
 });
 stayBtn.addEventListener("click", stay);
