@@ -13,7 +13,7 @@ const stayBtn = document.querySelector(".stay");
 const dealBtn = document.querySelector(".deal");
 const shuffleBtn = document.querySelector(".shuffle");
 
-//CLASSES
+//Objects
 const player = { hand: [], handVal: 0 };
 const dealer = { hand: [], handVal: 0 };
 
@@ -69,7 +69,6 @@ function render() {
 	});
 
 	// render dealer hand
-	// probably could have avoided this by creating user and dealer objects
 	dealer.hand.forEach(function (card) {
 		let cd = document.createElement("div");
 		cd.classList.add("card");
@@ -99,6 +98,7 @@ function hit() {
 		player.hand.push(deck.pop());
 	}
 	render();
+	dHandEl.firstChild.classList.add("back");
 }
 
 // stay function
@@ -106,7 +106,6 @@ function stay() {
 	if (end == true) {
 		return;
 	}
-	document.getElementById("flipped").classList.remove("back");
 	compareScore();
 	end = true;
 	render();
@@ -114,40 +113,53 @@ function stay() {
 
 // check dealer
 function compareScore() {
-	dealer.handVal = calcHandVal(dHand);
-	player.handVal = calcHandVal(pHand);
+	dealer.handVal = calcHandVal(dealer.hand);
+	player.handVal = calcHandVal(player.hand);
+	dHandEl.firstChild.classList.remove("back");
 
-	if (dealer.handVal > 16) {
-		if (dealer.handVal > player.handVal) {
-			textEl.textContent = "House wins! Press Deal to play again.";
-			return;
-		} else {
-			textEl.textContent = "House wins! Press Deal to play again.";
-			return;
-		}
-	} else if (dealer.handVal < 17) {
-		if (dealer.handVal > player.handVal) {
-			textEl.textContent = "House wins! Press Deal to play again.";
-			return;
-		} else if (dealer.handVal <= player.handVal) {
-			while (dealer.handVal < 17) {
-				dealer.hand.push(deck.pop());
-				dealer.handVal = calcHandVal(dHand);
+	while (dealer.handVal < 22) {
+		if (dealer.handVal > 16) {
+			if (dealer.handVal > player.handVal) {
+				textEl.textContent = "1 House wins! Press Deal to play again.";
+				return;
+			} else {
+				textEl.textContent = "2 Player wins! Press Deal to play again.";
+				return;
+			}
+		} else if (dealer.handVal < 17) {
+			if (dealer.handVal > player.handVal) {
+				textEl.textContent = "3 House wins! Press Deal to play again.";
+				return;
+			} else if (dealer.handVal <= player.handVal) {
+				while (dealer.handVal < 17) {
+					dealer.hand.push(deck.pop());
+					dealer.handVal = calcHandVal(dealer.hand);
+				}
 			}
 		}
+		if (dealer.handVal > player.handVal && dealer.handVal < 22) {
+			textEl.textContent = "4 House wins! Press Deal to play again.";
+			end = true;
+			return dealer.handVal;
+		} else if (dealer.handVal >= 17 && dealer.handVal < 22) {
+			textEl.textContent = "5 Player wins! Press Deal to play again.";
+		}
 	}
-	if (dealer.handVal > player.handVal && dealer.handVal < 22) {
-		textEl.textContent = "House wins! Press Deal to play again.";
-		end = true;
-		return dealer.handVal;
-	} else if (dealer.handVal >= 17 && dealer.handVal < 22) {
-		textEl.textContent = "Player wins! Press Deal to play again.";
-	}
-	// dealer.hand.unshift(deck.pop());
+	textEl.textContent = "House bust, Player wins! Press Deal to play again.";
 }
+// dealer.hand.unshift(deck.pop());
+
 // check bust
 function checkBust() {
-	return player.handVal > 21;
+	player.handVal = calcHandVal(player.hand);
+	dealer.handVal = calcHandVal(dealer.hand);
+	if (player.handVal > 21) {
+		textEl.textContent = "Player bust, House wins! Press Deal to play again.";
+	}
+	if (dealer.handVal > 21) {
+		textEl.textContent = "House bust, Player wins! Press Deal to play again.";
+	}
+
 	// {
 	// 	pHandEl.style.color = "red";
 	// 	return true;
