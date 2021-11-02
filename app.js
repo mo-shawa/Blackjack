@@ -13,21 +13,22 @@ const stayBtn = document.querySelector(".stay");
 const dealBtn = document.querySelector(".deal");
 const shuffleBtn = document.querySelector(".shuffle");
 
+//CLASSES
+const player = { hand: [], handVal: 0 };
+const dealer = { hand: [], handVal: 0 };
+
 //STATE VARIABLES
 let deck = [];
-let pHand = [];
-let pHandVal = 0;
-let dHand = [];
-let dHandVal = 0;
+
 // maybe use -1 0 1 instead of true false
 let end = false;
 
 //FUNCTIONS
 function init() {
-	pHand = [];
-	pHandVal = 0;
-	dHand = [];
-	dHandVal = 0;
+	player.hand = [];
+	player.handVal = 0;
+	dealer.hand = [];
+	dealer.handVal = 0;
 	textEl.innerHTML = "";
 	end = false;
 	deck = [];
@@ -41,21 +42,19 @@ function init() {
 
 //Render
 function render() {
-	pHandVal = calcHandVal(pHand);
+	player.handVal = calcHandVal(player.hand);
 	// if i disable either textContent, the whole thing breaks??
 	// turns out it was clearing the html, if you take that out you get duplicates
 	pHandEl.innerHTML = "";
-
-	dHandVal = calcHandVal(dHand);
+	dealer.handVal = calcHandVal(dealer.hand);
 	dHandEl.innerHTML = "";
-	calcHandVal(dHand);
-
-	checkBust();
+	console.log(`phand: ${player.handVal} dhand: ${dealer.handVal}`);
+	// checkBust();
 
 	// render dealt cards
 
 	// render player hand
-	pHand.forEach(function (card) {
+	player.hand.forEach(function (card) {
 		let cd = document.createElement("div");
 		cd.classList.add("card");
 
@@ -71,7 +70,7 @@ function render() {
 
 	// render dealer hand
 	// probably could have avoided this by creating user and dealer objects
-	dHand.forEach(function (card) {
+	dealer.hand.forEach(function (card) {
 		let cd = document.createElement("div");
 		cd.classList.add("card");
 
@@ -90,37 +89,65 @@ function render() {
 
 // hit function
 function hit() {
-	if (checkBust()) {
+	if (end == true) {
+		return;
+	} else if (checkBust()) {
 		end = true;
 		textEl.textContent = "House wins! Press Deal to play again";
 		return;
 	} else {
-		pHand.push(deck.pop());
+		player.hand.push(deck.pop());
 	}
 	render();
 }
 
 // stay function
 function stay() {
-	document.getElementById("flipped").classList.toggle("back");
-	checkDealer();
-	console.log("stey");
+	if (end == true) {
+		return;
+	}
+	document.getElementById("flipped").classList.remove("back");
+	compareScore();
+	end = true;
 	render();
 }
 
 // check dealer
-function checkDealer() {
-	// console.log(flip.classList);
-	// if (end) {
-	// 	return;
-	// }
-	if (dHandVal < 17 && dHandVal < pHandVal) {
-		dHand.unshift(deck.pop());
+function compareScore() {
+	dealer.handVal = calcHandVal(dHand);
+	player.handVal = calcHandVal(pHand);
+
+	if (dealer.handVal > 16) {
+		if (dealer.handVal > player.handVal) {
+			textEl.textContent = "House wins! Press Deal to play again.";
+			return;
+		} else {
+			textEl.textContent = "House wins! Press Deal to play again.";
+			return;
+		}
+	} else if (dealer.handVal < 17) {
+		if (dealer.handVal > player.handVal) {
+			textEl.textContent = "House wins! Press Deal to play again.";
+			return;
+		} else if (dealer.handVal <= player.handVal) {
+			while (dealer.handVal < 17) {
+				dealer.hand.push(deck.pop());
+				dealer.handVal = calcHandVal(dHand);
+			}
+		}
 	}
+	if (dealer.handVal > player.handVal && dealer.handVal < 22) {
+		textEl.textContent = "House wins! Press Deal to play again.";
+		end = true;
+		return dealer.handVal;
+	} else if (dealer.handVal >= 17 && dealer.handVal < 22) {
+		textEl.textContent = "Player wins! Press Deal to play again.";
+	}
+	// dealer.hand.unshift(deck.pop());
 }
 // check bust
 function checkBust() {
-	return pHandVal > 21;
+	return player.handVal > 21;
 	// {
 	// 	pHandEl.style.color = "red";
 	// 	return true;
@@ -147,11 +174,11 @@ function makeDeck(deck) {
 
 function shuffle() {
 	// return hands before shuffling?
-	// pHand.forEach(function(){
-	//     deck.push(pHand.pop())
+	// player.hand.forEach(function(){
+	//     deck.push(player.hand.pop())
 	// })
-	// dHand.forEach(function(){
-	//     deck.push(dHand.pop())
+	// dealer.hand.forEach(function(){
+	//     deck.push(dealer.hand.pop())
 	// })
 
 	for (let j = 0; j < 1000; j++) {
@@ -167,8 +194,8 @@ function shuffle() {
 
 // Deal cards
 function deal(deck) {
-	pHand.push(deck.pop(), deck.pop());
-	dHand.push(deck.pop(), deck.pop());
+	player.hand.push(deck.pop(), deck.pop());
+	dealer.hand.push(deck.pop(), deck.pop());
 }
 
 //Calculate hand values

@@ -39,10 +39,9 @@ body {
 	flex-wrap: wrap;
 	height: 100%;
 	overflow: hidden;
+	width: 33%;
 }
-.deck {
-	min-width: 20vh;
-}
+
 .buttons {
 	width: 80vw;
 	max-width: 720px;
