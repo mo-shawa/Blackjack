@@ -188,6 +188,6 @@ shuffleBtn.addEventListener("click", function () {
 dealBtn.addEventListener("click", init);
 
 hitBtn.addEventListener("click", function(){
-  end = false ? hit() : undefined
+  end == false ? hit() : undefined
 });
 stayBtn.addEventListener("click", stay);
