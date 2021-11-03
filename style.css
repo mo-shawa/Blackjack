@@ -1,5 +1,10 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
 body {
-	background-color: #f3f3f3;
+	background-color: #e0ebf9;
 	/* background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%23231f68' fill-opacity='0.46'%3E%3Cpath fill-rule='evenodd' d='M0 0h40v40H0V0zm40 40h40v40H40V40zm0-40h2l-2 2V0zm0 4l4-4h2l-6 6V4zm0 4l8-8h2L40 10V8zm0 4L52 0h2L40 14v-2zm0 4L56 0h2L40 18v-2zm0 4L60 0h2L40 22v-2zm0 4L64 0h2L40 26v-2zm0 4L68 0h2L40 30v-2zm0 4L72 0h2L40 34v-2zm0 4L76 0h2L40 38v-2zm0 4L80 0v2L42 40h-2zm4 0L80 4v2L46 40h-2zm4 0L80 8v2L50 40h-2zm4 0l28-28v2L54 40h-2zm4 0l24-24v2L58 40h-2zm4 0l20-20v2L62 40h-2zm4 0l16-16v2L66 40h-2zm4 0l12-12v2L70 40h-2zm4 0l8-8v2l-6 6h-2zm4 0l4-4v2l-2 2h-2z'/%3E%3C/g%3E%3C/svg%3E"); */
 }
 .container {
@@ -11,17 +16,21 @@ body {
 }
 
 .board {
+	position: relative;
 	height: 70%;
 	max-height: 720px;
 	width: 80vw;
-	max-width: 1120px;
+	width: 100%;
+	/* max-width: 1120px; */
 	background-color: #3b9656;
-	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%232f3631' fill-opacity='0.4' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
-	border: 5px solid white;
-	border-radius: 20px;
+	/* background: #e0ebf9; */
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%232f3631' fill-opacity='0.3' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+	border-top: 5px solid white;
+	border-bottom: 5px solid white;
+	/* border-radius: 20px; */
 	display: flex;
 	justify-content: space-evenly;
-	flex-direction: row;
+	flex-direction: column-reverse;
 	align-items: center;
 	text-align: center;
 	box-shadow: 1.2px 3.6px 2.7px rgba(0, 0, 0, 0.02),
@@ -32,14 +41,15 @@ body {
 }
 
 .board > div {
-	border: 1px solid rgba(0, 0, 0, 0.055);
+	position: relative;
+	/* border: 1px solid rgba(0, 0, 0, 0.055); */
 	display: flex;
 	justify-content: space-evenly;
 	align-items: center;
-	flex-wrap: wrap;
+	flex-wrap: nowrap;
 	height: 100%;
 	overflow: hidden;
-	width: 33%;
+	/* width: 33%; */
 }
 
 .buttons {
@@ -47,6 +57,7 @@ body {
 	max-width: 720px;
 	display: flex;
 	justify-content: space-evenly;
+	flex-wrap: wrap;
 }
 
 button {
@@ -69,24 +80,47 @@ button:hover {
 	color: white;
 	cursor: pointer;
 }
+.pHand > div:nth-child(3),
+.dHand > div:nth-child(3) {
+	position: absolute;
+	/* bottom: 15%; */
+	left: 10%;
+}
+.pHand > div:nth-child(4),
+.dHand > div:nth-child(4) {
+	position: absolute;
+	/* bottom: 15%; */
+	right: 10%;
+}
+
+.pHand > div:nth-child(5),
+.dHand > div:nth-child(5) {
+	position: absolute;
+	/* bottom: 15%; */
+	/* right: 10%; */
+}
 
 .card {
-	font-size: 20px;
+	font-size: clamp(1.7rem, 3.5vw, 3rem);
 	margin: 2px;
 	cursor: default;
-	/* box-shadow:
-  1.2px 3.6px 2.7px rgba(0, 0, 0, 0.02),
-  2.9px 8.6px 6.5px rgba(0, 0, 0, 0.028),
-  5.4px 16.2px 12.3px rgba(0, 0, 0, 0.035),
-  9.6px 28.8px 21.9px rgba(0, 0, 0, 0.042),
-  18px 53.9px 40.9px rgba(0, 0, 0, 0.05),
-  43px 129px 98px rgba(0, 0, 0, 0.07) */
+	box-shadow: 1.2px 3.6px 2.7px rgba(0, 0, 0, 0.4);
 }
 .text {
 	font-size: 2em;
 }
-@media only screen and (min-width: 678px) {
+/* /* @media only screen and (min-width: 678px) {
 	.card {
-		font-size: 30px;
+		font-size: 28px;
+	}
+} */
+@media only screen and (max-height: 850px) {
+	.card {
+		font-size: clamp(1.7rem, 3.5vw, 2.5rem);
+	}
+}
+@media only screen and (max-height: 850px) {
+	.card {
+		font-size: clamp(1.7rem, 3.5vw, 2.5rem);
 	}
 }

@@ -5,13 +5,14 @@ const values = [2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K", "A"];
 //CACHED ELEMENTS
 const pHandEl = document.querySelector(".pHand");
 const dHandEl = document.querySelector(".dHand");
-const deckEl = document.querySelector(".deck");
 const textEl = document.querySelector(".text");
+// const deckEl = document.querySelector(".deck");
+
 //buttons
 const hitBtn = document.querySelector(".hit");
 const stayBtn = document.querySelector(".stay");
 const dealBtn = document.querySelector(".deal");
-const shuffleBtn = document.querySelector(".shuffle");
+// const shuffleBtn = document.querySelector(".shuffle");
 
 //Objects
 const player = { hand: [], handVal: 0 };
@@ -123,18 +124,18 @@ function compareScore() {
 	while (dealer.handVal < 22) {
 		if (dealer.handVal > 16) {
 			if (dealer.handVal > player.handVal) {
-				textEl.textContent = "1 House wins! Press Deal to play again.";
+				textEl.textContent = "House wins! Press Deal to play again.";
 				return;
 			} else if (dealer.handVal == player.handVal) {
 				textEl.textContent = "Draw! Press Deal to play again.";
 				return;
 			} else {
-				textEl.textContent = "2 Player wins! Press Deal to play again.";
+				textEl.textContent = "Player wins! Press Deal to play again.";
 				return;
 			}
 		} else if (dealer.handVal < 17) {
 			if (dealer.handVal > player.handVal) {
-				textEl.textContent = "3 House wins! Press Deal to play again.";
+				textEl.textContent = "House wins! Press Deal to play again.";
 				return;
 			} else if (dealer.handVal <= player.handVal) {
 				while (dealer.handVal < 17) {
@@ -144,11 +145,11 @@ function compareScore() {
 			}
 		}
 		if (dealer.handVal > player.handVal && dealer.handVal < 22) {
-			textEl.textContent = "4 House wins! Press Deal to play again.";
+			textEl.textContent = "House wins! Press Deal to play again.";
 			end = true;
 			return dealer.handVal;
 		} else if (dealer.handVal >= 17 && dealer.handVal < 22) {
-			textEl.textContent = "5 Player wins! Press Deal to play again.";
+			textEl.textContent = "Player wins! Press Deal to play again.";
 		}
 	}
 	textEl.textContent = "House bust, Player wins! Press Deal to play again.";
@@ -218,13 +219,17 @@ function calcHandVal(hand) {
 	return sum;
 }
 
-shuffleBtn.addEventListener("click", function () {
-	shuffle();
-});
+// shuffleBtn.addEventListener("click", function () {
+// 	shuffle();
+// });
+
+// dealBtn.addEventListener("click", init);
 
 dealBtn.addEventListener("click", init);
-
 hitBtn.addEventListener("click", function () {
 	end == false ? hit() : undefined;
 });
-stayBtn.addEventListener("click", stay);
+stayBtn.addEventListener("click", function () {
+	end == false ? stay() : undefined;
+});
+// stayBtn.addEventListener("click", stay);
