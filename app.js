@@ -39,15 +39,35 @@ function init() {
 	render();
 	dHandEl.firstChild.id = "flipped";
 	dHandEl.firstChild.classList.add("back");
+	addCard(player);
 }
 
-//Render
+// Add Card
+// splitting up initial render from hit renders allows us to use GSAP effectively
+
+function addCard(person) {
+	const card = person.hand.push(deck.pop());
+	person.handVal = calcHandVal(person.hand);
+	let cd = document.createElement("div");
+	cd.classList.add("card");
+	console.log();
+
+	// Account for css class naming format
+	let parseVal;
+	typeof card.value == "number" && card.value < 10
+		? (parseVal = `0${card.value}`)
+		: (parseVal = card.value);
+	cd.classList.add(card.suit[0] + parseVal);
+
+	pHandEl.appendChild(cd);
+}
+
+// INITIAL Render
 function render() {
 	player.handVal = calcHandVal(player.hand);
-	// if i disable either textContent, the whole thing breaks??
-	// turns out it was clearing the html, if you take that out you get duplicates
-	pHandEl.innerHTML = "";
 	dealer.handVal = calcHandVal(dealer.hand);
+	// turns out it was clearing the html, if you take that out you re-render already rendered cards
+	pHandEl.innerHTML = "";
 	dHandEl.innerHTML = "";
 	console.log(`phand: ${player.handVal} dhand: ${dealer.handVal}`);
 	// checkBust();
@@ -68,6 +88,12 @@ function render() {
 
 		pHandEl.appendChild(cd);
 	});
+	gsap.from($(".pHand>.card"), {
+		duration: 0.3,
+		y: "-400%",
+		stagger: 0.5,
+		delay: 0.25,
+	});
 
 	// render dealer hand
 	dealer.hand.forEach(function (card) {
@@ -83,6 +109,7 @@ function render() {
 
 		dHandEl.appendChild(cd);
 	});
+	gsap.from($(".dHand>.card"), { duration: 0.3, y: "-400%", stagger: 0.5 });
 
 	// $('dHandEl div:first').addClass('back')
 }
