@@ -50,6 +50,8 @@ body {
 }
 
 button {
+	width: 100%;
+	max-width: 120px;
 	padding: 10px 20px;
 	background: white;
 	border: 2px solid white;

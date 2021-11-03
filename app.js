@@ -88,7 +88,7 @@ function render() {
 
 // hit function
 function hit() {
-	debugger;
+	// debugger;
 	if (end == true) {
 		return;
 	} else if (checkBust()) {
@@ -100,6 +100,7 @@ function hit() {
 	}
 	render();
 	dHandEl.firstChild.classList.add("back");
+	checkBust();
 }
 
 // stay function
@@ -123,6 +124,9 @@ function compareScore() {
 		if (dealer.handVal > 16) {
 			if (dealer.handVal > player.handVal) {
 				textEl.textContent = "1 House wins! Press Deal to play again.";
+				return;
+			} else if (dealer.handVal == player.handVal) {
+				textEl.textContent = "Draw! Press Deal to play again.";
 				return;
 			} else {
 				textEl.textContent = "2 Player wins! Press Deal to play again.";
@@ -156,6 +160,7 @@ function checkBust() {
 	player.handVal = calcHandVal(player.hand);
 	dealer.handVal = calcHandVal(dealer.hand);
 	if (player.handVal > 21) {
+		dHandEl.firstChild.classList.remove("back");
 		textEl.textContent = "Player bust, House wins! Press Deal to play again.";
 		return true;
 	}
@@ -163,13 +168,6 @@ function checkBust() {
 		textEl.textContent = "House bust, Player wins! Press Deal to play again.";
 		return true;
 	}
-
-	// {
-	// 	pHandEl.style.color = "red";
-	// 	return true;
-	// } else {
-	// 	return false;
-	// }
 }
 
 //Create a deck
@@ -189,14 +187,6 @@ function makeDeck(deck) {
 // Shuffle deck
 
 function shuffle() {
-	// return hands before shuffling?
-	// player.hand.forEach(function(){
-	//     deck.push(player.hand.pop())
-	// })
-	// dealer.hand.forEach(function(){
-	//     deck.push(dealer.hand.pop())
-	// })
-
 	for (let j = 0; j < 1000; j++) {
 		for (let i = 0; i < deck.length; i++) {
 			let random = Math.floor(Math.random() * deck.length);
@@ -205,7 +195,6 @@ function shuffle() {
 			deck[random] = temp;
 		}
 	}
-	// console.log(deck);
 }
 
 // Deal cards
