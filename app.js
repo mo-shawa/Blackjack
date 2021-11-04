@@ -246,17 +246,28 @@ function calcHandVal(hand) {
 		if (card.value == "J" || card.value == "Q" || card.value == "K") {
 			sum += 10;
 		} else if (card.value == "A") {
-      // sum += 1
-			sum + 11 <= 21 ? (sum += 11) : (sum += 1);
+      sum += 11
+			// sum + 11 <= 21 ? (sum += 11) : (sum += 1);
 		} else {
 			sum += card.value;
 		}
 	});
-  if (sum > 21 && hand.includes(card=>card.value ='A')){
-    sum -=10
-  }
-  console.log(`hand during calc: ${hand.values}`)
-  hand.reduce
+  let aces = []
+  aces = hand.filter(card=> card.value =='A')
+  console.log(aces.length)
+  if (aces.length == 1){
+    if (sum > 21){
+      sum -= 10
+    }
+  }else if(aces.length == 2){
+    sum -= 10
+    if (sum >21){
+      sum -=10
+    }
+    
+
+    }
+  
   // if (sum <= 21 && hand.includes()
 	return sum;
 }
