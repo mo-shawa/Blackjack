@@ -261,3 +261,9 @@ stayBtn.addEventListener("click", function () {
 	end == false ? stay() : undefined;
 });
 // stayBtn.addEventListener("click", stay);
+
+//animate buttons on startup
+gsap.from($("button"), { duration: 0.3, opacity: "0", y:'300%', stagger: 0.1 })
+
+// animate board on startup
+gsap.from($(".board"), { duration: 0.3, opacity: "0",y:'-50%', delay:"0.7" })
