@@ -235,7 +235,7 @@ function deal(deck) {
 
   //////////////////////////////////
 
-	player.hand.push(deck.pop(), {suit: 'diamonds', value: 'A'});
+	player.hand.push(deck.pop(), deck.pop());
 	dealer.hand.push(deck.pop(), deck.pop());
 }
 

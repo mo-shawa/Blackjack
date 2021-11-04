@@ -6,6 +6,8 @@ Welcome to Blackjack, One of the most popular card games in the world! This is a
 
 This version was created using HTML, CSS, JavaScript, jQuery, and GSAP.
 
+Click <a href='https://mo-shawa.github.io/Blackjack/'>here</a> to play!
+
 ---
 
 The goal in Blackjack is to beat the dealer's hand without going over 21. 
