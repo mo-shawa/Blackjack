@@ -15,8 +15,9 @@ const dealBtn = document.querySelector(".deal");
 // const shuffleBtn = document.querySelector(".shuffle");
 
 //Objects
-const player = { hand: [], handVal: 0 };
-const dealer = { hand: [], handVal: 0 };
+const player = { hand: [], handVal: 0, el: pHandEl };
+const dealer = { hand: [], handVal: 0, el: dHandEl};
+let gsapCounter = 3
 
 //STATE VARIABLES
 let deck = [];
@@ -32,6 +33,7 @@ function init() {
 	dealer.handVal = 0;
 	textEl.innerHTML = "";
 	end = false;
+  gsapCounter = 3
 	deck = [];
 	makeDeck(deck);
 	shuffle(deck);
@@ -39,9 +41,25 @@ function init() {
 	render();
 	dHandEl.firstChild.id = "flipped";
 	dHandEl.firstChild.classList.add("back");
-	addCard(player);
+  gsap.from($(".pHand>.card"), {
+		duration: 0.3,
+		y: "-400%",
+		stagger: 0.5,
+		delay: 0.25,
+	})
+  gsap.from($(".dHand>.card"), { duration: 0.3, y: "-400%", stagger: 0.5 });
+  
 }
 
+
+// Add class for CSS library classes
+function addClass(person){
+  let parseVal;
+	typeof card.value == "number" && card.value < 10
+		? (parseVal = `0${card.value}`)
+		: (parseVal = card.value);
+	cd.classList.add(card.suit[0] + parseVal);
+}
 // Add Card
 // splitting up initial render from hit renders allows us to use GSAP effectively
 
@@ -50,16 +68,16 @@ function addCard(person) {
 	person.handVal = calcHandVal(person.hand);
 	let cd = document.createElement("div");
 	cd.classList.add("card");
-	console.log();
+	console.log(card.suit)
 
-	// Account for css class naming format
-	let parseVal;
-	typeof card.value == "number" && card.value < 10
-		? (parseVal = `0${card.value}`)
-		: (parseVal = card.value);
-	cd.classList.add(card.suit[0] + parseVal);
+	// // Account for css class naming format
+	// let parseVal;
+	// typeof card.value == "number" && card.value < 10
+	// 	? (parseVal = `0${card.value}`)
+	// 	: (parseVal = card.value);
+	// cd.classList.add(card.suit[0] + parseVal);
 
-	pHandEl.appendChild(cd);
+	// pHandEl.appendChild(cd);
 }
 
 // INITIAL Render
@@ -88,12 +106,7 @@ function render() {
 
 		pHandEl.appendChild(cd);
 	});
-	gsap.from($(".pHand>.card"), {
-		duration: 0.3,
-		y: "-400%",
-		stagger: 0.5,
-		delay: 0.25,
-	});
+	;
 
 	// render dealer hand
 	dealer.hand.forEach(function (card) {
@@ -109,7 +122,6 @@ function render() {
 
 		dHandEl.appendChild(cd);
 	});
-	gsap.from($(".dHand>.card"), { duration: 0.3, y: "-400%", stagger: 0.5 });
 
 	// $('dHandEl div:first').addClass('back')
 }
@@ -127,7 +139,10 @@ function hit() {
 		player.hand.push(deck.pop());
 	}
 	render();
+  gsap.from($(`.pHand>.card:nth-child(${gsapCounter})`), { duration: 0.3, y: "-400%", stagger: 0.5 });
+
 	dHandEl.firstChild.classList.add("back");
+  gsapCounter++
 	checkBust();
 }
 
