@@ -130,12 +130,13 @@ function stay() {
 		return;
 	}
   textEl.style.display = 'flex'
-  gsap.from($(".text"), { duration: 0.3, x: "-200%", stagger: 0.5 })
+  gsap.from($(".text"), { duration: 0.3, x: "-200%", stagger: 0.5, delay: 0.5 })
 
 	compareScore();
 	end = true;
 
 	render();
+  gsap.from($(`.dHand>.card:nth-child(n+${gsapCounter})`), { duration: 0.3, y: "-400%", stagger: 0.5 });
 }
 
 // compare values
@@ -144,6 +145,7 @@ function compareScore() {
 	dealer.handVal = calcHandVal(dealer.hand);
 	player.handVal = calcHandVal(player.hand);
 	dHandEl.firstChild.classList.remove("back");
+  gsapCounter = 3
 
 	while (dealer.handVal < 22) {
 		if (dealer.handVal > 16) {
@@ -164,7 +166,9 @@ function compareScore() {
 			} else if (dealer.handVal <= player.handVal) {
 				while (dealer.handVal < 17) {
 					dealer.hand.push(deck.pop());
+          
 					dealer.handVal = calcHandVal(dealer.hand);
+        
 				}
 			}
 		}
@@ -188,6 +192,7 @@ function checkBust() {
 		dHandEl.firstChild.classList.remove("back");
 		textEl.textContent = "Player bust, House wins! Press Deal to play again.";
     textEl.style.display = 'flex'
+
     return true;
     
 	}
@@ -227,7 +232,10 @@ function shuffle() {
 
 // Deal cards
 function deal(deck) {
-	player.hand.push(deck.pop(), deck.pop());
+
+  //////////////////////////////////
+
+	player.hand.push(deck.pop(), {suit: 'diamonds', value: 'A'});
 	dealer.hand.push(deck.pop(), deck.pop());
 }
 
@@ -238,19 +246,20 @@ function calcHandVal(hand) {
 		if (card.value == "J" || card.value == "Q" || card.value == "K") {
 			sum += 10;
 		} else if (card.value == "A") {
+      // sum += 1
 			sum + 11 <= 21 ? (sum += 11) : (sum += 1);
 		} else {
 			sum += card.value;
 		}
 	});
+  if (sum > 21 && hand.includes(card=>card.value ='A')){
+    sum -=10
+  }
+  console.log(`hand during calc: ${hand.values}`)
+  hand.reduce
+  // if (sum <= 21 && hand.includes()
 	return sum;
 }
-
-// shuffleBtn.addEventListener("click", function () {
-// 	shuffle();
-// });
-
-// dealBtn.addEventListener("click", init);
 
 dealBtn.addEventListener("click", init)
 
@@ -260,7 +269,6 @@ hitBtn.addEventListener("click", function () {
 stayBtn.addEventListener("click", function () {
 	end == false ? stay() : undefined;
 });
-// stayBtn.addEventListener("click", stay);
 
 //animate buttons on startup
 gsap.from($("button"), { duration: 0.3, opacity: "0", y:'300%', stagger: 0.1 })
