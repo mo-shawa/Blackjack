@@ -32,6 +32,7 @@ function init() {
 	dealer.hand = [];
 	dealer.handVal = 0;
 	textEl.innerHTML = "";
+  
   textEl.style.display = 'none'
 	end = false;
   gsapCounter = 3
@@ -129,6 +130,7 @@ function stay() {
 		return;
 	}
   textEl.style.display = 'flex'
+  gsap.from($(".text"), { duration: 0.3, x: "-200%", stagger: 0.5 })
 
 	compareScore();
 	end = true;
@@ -250,7 +252,8 @@ function calcHandVal(hand) {
 
 // dealBtn.addEventListener("click", init);
 
-dealBtn.addEventListener("click", init);
+dealBtn.addEventListener("click", init)
+
 hitBtn.addEventListener("click", function () {
 	end == false ? hit() : undefined;
 });
