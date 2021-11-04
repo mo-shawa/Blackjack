@@ -32,6 +32,7 @@ function init() {
 	dealer.hand = [];
 	dealer.handVal = 0;
 	textEl.innerHTML = "";
+  textEl.style.display = 'none'
 	end = false;
   gsapCounter = 3
 	deck = [];
@@ -52,33 +53,9 @@ function init() {
 }
 
 
-// Add class for CSS library classes
-function addClass(person){
-  let parseVal;
-	typeof card.value == "number" && card.value < 10
-		? (parseVal = `0${card.value}`)
-		: (parseVal = card.value);
-	cd.classList.add(card.suit[0] + parseVal);
-}
-// Add Card
-// splitting up initial render from hit renders allows us to use GSAP effectively
-
-function addCard(person) {
-	const card = person.hand.push(deck.pop());
-	person.handVal = calcHandVal(person.hand);
-	let cd = document.createElement("div");
-	cd.classList.add("card");
-	console.log(card.suit)
-
-	// // Account for css class naming format
-	// let parseVal;
-	// typeof card.value == "number" && card.value < 10
-	// 	? (parseVal = `0${card.value}`)
-	// 	: (parseVal = card.value);
-	// cd.classList.add(card.suit[0] + parseVal);
 
 	// pHandEl.appendChild(cd);
-}
+
 
 // INITIAL Render
 function render() {
@@ -151,8 +128,11 @@ function stay() {
 	if (end == true) {
 		return;
 	}
+  textEl.style.display = 'flex'
+
 	compareScore();
 	end = true;
+
 	render();
 }
 
@@ -205,11 +185,14 @@ function checkBust() {
 	if (player.handVal > 21) {
 		dHandEl.firstChild.classList.remove("back");
 		textEl.textContent = "Player bust, House wins! Press Deal to play again.";
-		return true;
+    textEl.style.display = 'flex'
+    return true;
+    
 	}
 	if (dealer.handVal > 21) {
 		textEl.textContent = "House bust, Player wins! Press Deal to play again.";
-		return true;
+    textEl.style.display = 'flex'
+    return true;
 	}
 }
 
