@@ -33,9 +33,11 @@ After the player `stays`, the dealer will continue to `hit` as long as their han
 
 ### Future updates:
 
-- [ ] Comprehensive + realistic animations 
+- [ ] Card reveal animation 
+- [ ] Realistic animations 
 - [ ] Multiple player support
 - [ ] Betting system
-- [ ] Correctly calculate hands with multiple aces
+- [x] Correctly calculate hands with multiple aces
+- [ ] Dealer hits on soft 17 & draw
 - [ ] Splitting hands
 
