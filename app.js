@@ -27,9 +27,9 @@ function init() {
 	dealer.hand = [];
 	dealer.handVal = 0;
 	textEl.innerHTML = "";
-  
   textEl.style.display = 'none'
 	end = false;
+  // Allows us to track cards for hit animation
   gsapCounter = 3
 	deck = [];
 	makeDeck(deck);
@@ -68,7 +68,6 @@ function render() {
 	player.hand.forEach(function (card) {
 		let cd = document.createElement("div");
 		cd.classList.add("card");
-
 		// Account for css class naming format
 		let parseVal;
 		typeof card.value == "number" && card.value < 10
@@ -84,8 +83,6 @@ function render() {
 	dealer.hand.forEach(function (card) {
 		let cd = document.createElement("div");
 		cd.classList.add("card");
-
-		// Account for css class naming format
 		let parseVal;
 		typeof card.value == "number" && card.value < 10
 			? (parseVal = `0${card.value}`)
@@ -100,19 +97,19 @@ function render() {
 function hit() {
 	if (end == true) {
 		return;
-	} else if (checkBust()) {
-		end = true;
-		textEl.textContent = "House wins! Press Deal to play again";
-		return;
 	} else {
 		player.hand.push(deck.pop());
 	}
 	render();
+  // Animate in added cards
   gsap.from($(`.pHand>.card:nth-child(${gsapCounter})`), { duration: 0.3, y: "-400%", stagger: 0.5 });
-
+  // Reapply hidden card class that was removed by render clearing board
 	dHandEl.firstChild.classList.add("back");
+  // Increment animation counter
   gsapCounter++
+  // End game 
 	checkBust();
+
 }
 
 // stay function
@@ -121,25 +118,22 @@ function stay() {
 		return;
 	}
   textEl.style.display = 'flex'
-  gsap.from($(".text"), { duration: 0.3, x: "-200%", stagger: 0.5, delay: 0.5 })
-
+  gsap.from(".text", { duration: 0.3, opacity: 0, delay: 0.6 })
 	compareScore();
 	end = true;
-
 	render();
-  gsap.from($(`.dHand>.card:nth-child(n+${gsapCounter})`), { duration: 0.3, y: "-400%", stagger: 0.5 });
+  // Animate dealer cards 
+  gsap.from($(`.dHand>.card:nth-child(n+${gsapCounter})`), { duration: 0.3, y: "-200%", stagger: 0.3, delay:0.3 });
 }
 
-// compare values
+// Compare Player and Dealer hand values
 
 function compareScore() {
 	dealer.handVal = calcHandVal(dealer.hand);
 	player.handVal = calcHandVal(player.hand);
 	dHandEl.firstChild.classList.remove("back");
-  gsapCounter = 3
-
-	while (dealer.handVal < 22) {
-    
+  // Comparison logic
+	while (dealer.handVal < 22) {    
 		if (dealer.handVal > 16) {
 			if (dealer.handVal > player.handVal) {
         end = true
@@ -149,7 +143,8 @@ function compareScore() {
         end = true
 				textEl.textContent = "Draw! Press Deal to play again.";
 				return;
-			}// Dealer only hits on 17 if hand has an ace
+			}
+      // Dealer only hits on 17 if hand has an ace
       else if ((dealer.handVal == 17) && (dealer.hand.some(card=> card.value == 'A'))) {
         dealer.hand.push(deck.pop())
         dealer.handVal = calcHandVal(dealer.hand)
@@ -183,7 +178,6 @@ function compareScore() {
 	}
 	textEl.textContent = "House bust, Player wins! Press Deal to play again.";
 }
-// dealer.hand.unshift(deck.pop());
 
 // check bust
 function checkBust() {
@@ -193,6 +187,7 @@ function checkBust() {
 		dHandEl.firstChild.classList.remove("back");
 		textEl.textContent = "Player bust, House wins! Press Deal to play again.";
     textEl.style.display = 'flex'
+    gsap.from(".text", { duration: 0.3, opacity: 0, delay: 0.6 })
     end = true
     return true;
     
@@ -200,6 +195,7 @@ function checkBust() {
 	if (dealer.handVal > 21) {
 		textEl.textContent = "House bust, Player wins! Press Deal to play again.";
     textEl.style.display = 'flex'
+    gsap.from(".text", { duration: 0.3, opacity: 0, delay: 0.6 })
     end = true
     return true;
 	}
@@ -238,8 +234,7 @@ function deal(deck) {
   //////////////////////////////////
 
 	player.hand.push(deck.pop(), deck.pop());
-	dealer.hand.push({suit: 'diamonds', value: 6},
-  {suit: 'diamonds', value: 'A'});
+	dealer.hand.push(deck.pop(), deck.pop());
 }
 
 //Calculate hand values
@@ -291,7 +286,7 @@ stayBtn.addEventListener("click", function () {
 });
 
 //animate buttons on startup
-gsap.from($("button"), { duration: 0.3, opacity: "0", y:'300%', stagger: 0.1 })
+gsap.from($("button"), { duration: 0.4, opacity: "0", y:'70%', stagger: 0.1 })
 
 // animate board on startup
-gsap.from($(".board"), { duration: 0.3, opacity: "0",y:'-50%', delay:"0.7" })
+gsap.from($(".board"), { duration: 0.3, opacity: "0",y:'-10%', delay:"0.7" })

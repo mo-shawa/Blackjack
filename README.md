@@ -35,6 +35,7 @@ After the player `stays`, the dealer will continue to `hit` as long as their han
 
 - [ ] Card reveal animation 
 - [ ] Realistic animations 
+- [ ] Dynamic result animations (currently fixed delay) 
 - [ ] Multiple player support
 - [ ] Betting system
 - [x] Correctly calculate hands with multiple aces
