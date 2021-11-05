@@ -34,7 +34,8 @@ After the player `stays`, the dealer will continue to `hit` as long as their han
 ### Future updates:
 
 - [ ] Card reveal animation 
-- [ ] Realistic animations 
+- [ ] Fix dealer animations not always playing
+- [ ] Realistic anima`tions 
 - [ ] Dynamic result animations (currently fixed delay) 
 - [ ] Multiple player support
 - [ ] Betting system
