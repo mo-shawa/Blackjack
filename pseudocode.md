@@ -8,7 +8,7 @@ const values = 2, 3, 4, 5, 6, 7, 8, 9, J, Q, K, A
 
 
 // cached elements
-grab html elements : deck, buttons(hit,stay,deal,shuffle), player hand, house hand
+grab html elements : deck, buttons(hit,stay,deal,shuffle), player hand, dealer hand
 
 
 
@@ -16,8 +16,8 @@ grab html elements : deck, buttons(hit,stay,deal,shuffle), player hand, house ha
 deck
 player hand
 player hand value
-house hand
-house hand value
+dealer hand
+dealer hand value
 won
 
 // functions
@@ -29,8 +29,8 @@ init
     player hand = []
     pHand value = 0
 
-    house hand = []
-    hHand value = 0
+    dealer hand = []
+    dHand value = 0
 
     won = false
 
@@ -57,9 +57,9 @@ define function render
     for each card in player hand
         create div with classes from css card library based on suit and value
         append div to player hand element
-    for each card in house hand
+    for each card in dealer hand
         create div with classes from css card library based on suit and value
-        append div to house hand element
+        append div to dealer hand element
 
     grab deck html element
     // can probably just render the top card or so
@@ -74,7 +74,7 @@ define function deal
     make deck
     shuffle deck
     push from deck to player hand x 2
-    push from deck to house hand x 2
+    push from deck to dealer hand x 2
     // using pop or unshift might be good
 
 
@@ -122,4 +122,3 @@ hit button click listener (function)
 
 
 ```
-Testing WSL 

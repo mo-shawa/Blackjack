@@ -13,7 +13,7 @@ const dealBtn = document.querySelector(".deal");
 
 // Objects
 const player = { hand: [], handVal: 0, el: pHandEl };
-const dealer = { hand: [], handVal: 0, el: dHandEl};
+const dealer = { hand: [], handVal: 0, el: dHandEl };
 
 //STATE VARIABLES
 let gsapCounter = 3
@@ -27,10 +27,10 @@ function init() {
 	dealer.hand = [];
 	dealer.handVal = 0;
 	textEl.innerHTML = "";
-  textEl.style.display = 'none'
+	textEl.style.display = 'none'
 	end = false;
-  // Allows us to track cards for hit animation
-  gsapCounter = 3
+	// Allows us to track cards for hit animation
+	gsapCounter = 3
 	deck = [];
 	makeDeck(deck);
 	shuffle(deck);
@@ -38,22 +38,22 @@ function init() {
 	render();
 	dHandEl.firstChild.id = "flipped";
 	dHandEl.firstChild.classList.add("back");
-  // Animate cards on deal
-  gsap.from($(".pHand>.card"), {
+	// Animate cards on deal
+	gsap.from($(".pHand>.card"), {
 		duration: 0.4,
-    opacity: 0,
+		opacity: 0,
 		y: "-200%",
 		stagger: 0.5,
-    ease: "power4.inOut"
+		ease: "power4.inOut"
 	})
-  gsap.from($(".dHand>.card"), { 
-    duration: 0.4, 
-    opacity: 0,
-    y: "-200%", 
-    stagger: 0.5,
-    delay: 0.25,
-    ease: "power4.inOut"
-  });
+	gsap.from($(".dHand>.card"), {
+		duration: 0.4,
+		opacity: 0,
+		y: "-200%",
+		stagger: 0.5,
+		delay: 0.25,
+		ease: "power4.inOut"
+	});
 }
 
 // Render
@@ -101,13 +101,13 @@ function hit() {
 		player.hand.push(deck.pop());
 	}
 	render();
-  // Animate in added cards
-  gsap.from($(`.pHand>.card:nth-child(${gsapCounter})`), { duration: 0.3, y: "-400%", stagger: 0.5 });
-  // Reapply hidden card class that was removed by render clearing board
+	// Animate in added cards
+	gsap.from($(`.pHand>.card:nth-child(${gsapCounter})`), { duration: 0.3, y: "-400%", stagger: 0.5 });
+	// Reapply hidden card class that was removed by render clearing board
 	dHandEl.firstChild.classList.add("back");
-  // Increment animation counter
-  gsapCounter++
-  // End game 
+	// Increment animation counter
+	gsapCounter++
+	// End game 
 	checkBust();
 
 }
@@ -117,13 +117,13 @@ function stay() {
 	if (end == true) {
 		return;
 	}
-  textEl.style.display = 'flex'
-  gsap.from(".text", { duration: 0.3, opacity: 0, delay: 0.6 })
+	textEl.style.display = 'flex'
+	gsap.from(".text", { duration: 0.3, opacity: 0, delay: 0.6 })
 	compareScore();
 	end = true;
 	render();
-  // Animate dealer cards 
-  gsap.from($(`.dHand>.card:nth-child(n+${gsapCounter})`), { duration: 0.3, y: "-200%", stagger: 0.3, delay:0.3 });
+	// Animate dealer cards 
+	gsap.from($(`.dHand>.card:nth-child(n+${gsapCounter})`), { duration: 0.3, y: "-200%", stagger: 0.3, delay: 0.3 });
 }
 
 // Compare Player and Dealer hand values
@@ -132,39 +132,39 @@ function compareScore() {
 	dealer.handVal = calcHandVal(dealer.hand);
 	player.handVal = calcHandVal(player.hand);
 	dHandEl.firstChild.classList.remove("back");
-  // Comparison logic
-	while (dealer.handVal < 22) {    
+	// Comparison logic
+	while (dealer.handVal < 22) {
 		if (dealer.handVal > 16) {
 			if (dealer.handVal > player.handVal) {
-        end = true
+				end = true
 				textEl.textContent = "House wins! Press Deal to play again.";
 				return;
 			} else if (dealer.handVal == player.handVal) {
-        end = true
+				end = true
 				textEl.textContent = "Draw! Press Deal to play again.";
 				return;
 			}
-      // Dealer only hits on 17 if hand has an ace
-      else if ((dealer.handVal == 17) && (dealer.hand.some(card=> card.value == 'A'))) {
-        dealer.hand.push(deck.pop())
-        dealer.handVal = calcHandVal(dealer.hand)
+			// Dealer only hits on 17 if hand has an ace
+			else if ((dealer.handVal == 17) && (dealer.hand.some(card => card.value == 'A'))) {
+				dealer.hand.push(deck.pop())
+				dealer.handVal = calcHandVal(dealer.hand)
 			}
-       else {
-        end = true
+			else {
+				end = true
 				textEl.textContent = "Player wins! Press Deal to play again.";
 				return;
 			}
 		} else if (dealer.handVal < 17) {
 			if (dealer.handVal > player.handVal) {
 				end = true
-        textEl.textContent = "House wins! Press Deal to play again.";
+				textEl.textContent = "House wins! Press Deal to play again.";
 				return;
 			} else if (dealer.handVal <= player.handVal) {
-				while (dealer.handVal < 17  ) {
+				while (dealer.handVal < 17) {
 					dealer.hand.push(deck.pop());
-          
+
 					dealer.handVal = calcHandVal(dealer.hand);
-        
+
 				}
 			}
 		}
@@ -186,18 +186,18 @@ function checkBust() {
 	if (player.handVal > 21) {
 		dHandEl.firstChild.classList.remove("back");
 		textEl.textContent = "Player bust, House wins! Press Deal to play again.";
-    textEl.style.display = 'flex'
-    gsap.from(".text", { duration: 0.3, opacity: 0, delay: 0.6 })
-    end = true
-    return true;
-    
+		textEl.style.display = 'flex'
+		gsap.from(".text", { duration: 0.3, opacity: 0, delay: 0.6 })
+		end = true
+		return true;
+
 	}
 	if (dealer.handVal > 21) {
 		textEl.textContent = "House bust, Player wins! Press Deal to play again.";
-    textEl.style.display = 'flex'
-    gsap.from(".text", { duration: 0.3, opacity: 0, delay: 0.6 })
-    end = true
-    return true;
+		textEl.style.display = 'flex'
+		gsap.from(".text", { duration: 0.3, opacity: 0, delay: 0.6 })
+		end = true
+		return true;
 	}
 }
 
@@ -231,7 +231,7 @@ function shuffle() {
 // Deal cards
 function deal(deck) {
 
-  //////////////////////////////////
+	//////////////////////////////////
 
 	player.hand.push(deck.pop(), deck.pop());
 	dealer.hand.push(deck.pop(), deck.pop());
@@ -245,34 +245,34 @@ function calcHandVal(hand) {
 			sum += 10;
 		} else if (card.value == "A") {
 			// default ace value to 11
-      sum += 11
+			sum += 11
 		} else {
 			sum += card.value;
 		}
 	});
-  // Track number of Aces in a hand
-  let aces = []
-  aces = hand.filter(card=> card.value =='A')  
-  // Reduce value only if needed
-  if (aces.length == 1){
-    if (sum > 21){
-      sum -= 10
-    }
-  }else if(aces.length == 2){
-      sum -= 10
-    if (sum >21){
-      sum -=10
-    }
-  }else if(aces.length > 2){
-      sum -=10
-      if (sum >21){
-        sum -=10
-      }
-      if(sum >21){
-        sum -= 10
-      }
-    }
-      
+	// Track number of Aces in a hand
+	let aces = []
+	aces = hand.filter(card => card.value == 'A')
+	// Reduce value only if needed
+	if (aces.length == 1) {
+		if (sum > 21) {
+			sum -= 10
+		}
+	} else if (aces.length == 2) {
+		sum -= 10
+		if (sum > 21) {
+			sum -= 10
+		}
+	} else if (aces.length > 2) {
+		sum -= 10
+		if (sum > 21) {
+			sum -= 10
+		}
+		if (sum > 21) {
+			sum -= 10
+		}
+	}
+
 	return sum;
 }
 
@@ -286,7 +286,7 @@ stayBtn.addEventListener("click", function () {
 });
 
 //animate buttons on startup
-gsap.from($("button"), { duration: 0.4, opacity: "0", y:'70%', stagger: 0.1 })
+gsap.from($("button"), { duration: 0.4, opacity: "0", y: '70%', stagger: 0.1 })
 
 // animate board on startup
-gsap.from($(".board"), { duration: 0.3, opacity: "0",y:'-10%', delay:"0.7" })
+gsap.from($(".board"), { duration: 0.3, opacity: "0", y: '-10%', delay: "0.7" })
